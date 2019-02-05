@@ -1,0 +1,24 @@
+{
+  "name": "knowme_back_end",
+  "version": "1.0.0",
+  "description": "* Back end creating server for KnowMe social media application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zac-Zajdel/knowme_back_end.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zac-Zajdel/knowme_back_end/issues"
+  },
+  "homepage": "https://github.com/Zac-Zajdel/knowme_back_end#readme",
+  "dependencies": {
+    "mongoose": "^5.4.9"
+  }
+}
