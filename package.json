@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/Zac-Zajdel/knowme_back_end#readme",
   "dependencies": {
-    "mongoose": "^5.4.9"
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.15"
   }
 }

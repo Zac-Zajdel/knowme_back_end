@@ -1,7 +1,15 @@
 const mongoose = require('mongoose');
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const server = '127.0.0.1:27017';
 const database = 'KnowMe';
+const port = 3000;
+
 
 // Check if we have a successful connection with the database.
 connection = () => {
@@ -13,25 +21,37 @@ connection = () => {
       console.log(err);
     })
 }
-
 connection();
 
-// Structure of the database.
-const emailSchema = new mongoose.Schema({
-  email: String
+
+// Structure of the document
+const registerSchema = new mongoose.Schema({
+  username: String,
+  firstName: String,
+  lastName: String,
+  email: String,
+  password: String
 });
 
-// A model is a class with which we construct documents.
-let email = mongoose.model('email', emailSchema);
+// Creates a folder which will store the User data.
+const User = mongoose.model('User', registerSchema);
 
-// Creates a new document
-// This will be the users in KnowMe
-let email_address = new email({ email: 'zaczajdel213@gmail.com' });
-console.log(email_address.email);
-
-email_address.save((err) => {
-  if (err) {
-    console.log(err);
-  }
-  console.log('Saved to database');
+app.post('/register', (req, res) => {
+  const { username, firstName, lastName, email, password } = req.body;
+  let data = new User(req.body);
+  data.save().then(item => {
+    console.log(item);
+    res.send('Data was saved to database!');
+  })
+    .catch(err => {
+      res.status(400).send(`Unable to save to database ${err}`);
+    });
 });
+
+app.get('/', (req, res) => {
+  res.send('Displaying Content Successful');
+});
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+})
