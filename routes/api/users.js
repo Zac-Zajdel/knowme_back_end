@@ -7,17 +7,30 @@ const User = require('../../models/User');
 const keys = require('../../config/keys');
 const passport = require('passport');
 
+// Get the input validation
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
+
 // Tests User Route
 router.get('/test', (req, res) => res.json({ message: 'Users Works' }));
 
 // Registers a user and connects to the database
+// Runs the validation method from is-empty.js
 // Attempt to find if the email already exists
 // Also creates avatar, encrypts password, and stores in DB.
 router.post('/register', (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  // Validates if the body has any empty info.
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
-        return res.status(400).json({ email: 'Email already exists in the database' });
+        errors.email = 'Email already exists';
+        return res.status(400).json(errors);
       } else {
         // Found a cool thing called gravatar. Neat
         const avatar = gravatar.url(req.body.email, {
@@ -51,13 +64,22 @@ router.post('/register', (req, res) => {
 // Returns the JWT Token
 // Test the email and password being different to make it fail in PostMan
 router.post('/login', (req, res) => {
+  // WILL NOT PROPERLY VALIDATE
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  // Validates if the body has any empty info.
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        return res.status(404).json({ email: 'The User was not found' });
+        errors.email = 'User not found';
+        return res.status(404).json(errors);
       }
 
       // Compare the hashed and non-hashed password
@@ -76,7 +98,8 @@ router.post('/login', (req, res) => {
               });
             });
           } else {
-            return res.status(400).json({ password: 'Password incorrect' });
+            errors.password = 'Password incorrect';
+            return res.status(400).json(errors);
           }
         })
     });
