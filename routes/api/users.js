@@ -15,7 +15,7 @@ const validateLoginInput = require('../../validation/login');
 router.get('/test', (req, res) => res.json({ message: 'Users Works' }));
 
 // Registers a user and connects to the database
-// Runs the validation method from is-empty.js
+// Runs the validation method checking all inputs are acceptable.
 // Attempt to find if the email already exists
 // Also creates avatar, encrypts password, and stores in DB.
 router.post('/register', (req, res) => {
@@ -52,6 +52,7 @@ router.post('/register', (req, res) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
+            // Saves it to the database.
             newUser.save()
               .then(user => res.json(user))
               .catch(err => console.log(err));
@@ -64,7 +65,6 @@ router.post('/register', (req, res) => {
 // Returns the JWT Token
 // Test the email and password being different to make it fail in PostMan
 router.post('/login', (req, res) => {
-  // WILL NOT PROPERLY VALIDATE
   const { errors, isValid } = validateLoginInput(req.body);
 
   // Validates if the body has any empty info.
