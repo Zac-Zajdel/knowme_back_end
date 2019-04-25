@@ -1,4 +1,3 @@
-
 // Checks to see if the value of any of the login or register data is an empty value
 const isEmpty = value =>
   value === undefined ||
