@@ -3,3 +3,4 @@
 * Back end creating server for KnowMe media application
 
 * Using MongoDB to store data for easy retrieval.
+  - 3 collections: users, profiles, posts.

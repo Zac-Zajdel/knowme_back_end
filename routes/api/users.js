@@ -92,7 +92,7 @@ router.post('/login', (req, res) => {
 
             // Give the payload to the token and callback
             // Use Bearer Protocol
-            jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+            jwt.sign(payload, keys.secretOrKey, { expiresIn: 7200 }, (err, token) => {
               res.json({
                 success: true,
                 token: 'Bearer ' + token

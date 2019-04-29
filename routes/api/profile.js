@@ -56,17 +56,19 @@ router.get('/handle/:handle', (req, res) => {
   This will get all the profiles in the database
 */
 router.get('/all', (req, res) => {
+  const errors = {};
+
   Profile.find()
     .populate('user', ['name', 'avatar'])
     .then(profiles => {
       if (!profiles) {
-        errors.profile = 'There are no profiles to grab.';
+        errors.noProfile = 'There are no profiles to grab.';
         return res.status(404).json(errors)
       }
       res.json(profiles);
     })
     .catch(err => res.status(404).json({ profiles: 'There are no profiles to grab.' }));
-})
+});
 
 /*
   MAY MAKE PRIVATE AS WELL
